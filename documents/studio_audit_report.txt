@@ -1,0 +1,397 @@
+=== STUDIO AUDIT REPORT ===
+Generated: Mon 03 Aug 2026 14:26:19 NZST
+User: tim
+
+=== STRAY FILES IN /home/tim ===
+--- /home/tim/package.json ---
+{
+  "dependencies": {
+    "@base44/sdk": "^0.8.40",
+    "apify-client": "^2.24.0",
+    "express": "^5.2.1"
+  },
+  "name": "tim",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module"
+}
+
+--- /home/tim/index.html ---
+<!-- Stylesheets -->
+<link rel="stylesheet" href="style.css" />
+
+<!-- Standard Scripts -->
+<script src="script.js" defer></script>
+
+<!-- ES Modules (If importing/exporting modules like Dragon9Time.js) -->
+<script type="module" src="Dragon9Time.js"></script>
+
+--- /home/tim/server.js.save ---
+
+
+import express from 'express';
+import { ApifyClient } from 'apify-client';
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+const client = new ApifyClient({
+    token: process.env.APIFY_TOKEN,
+    });
+
+    app.use(express.json());
+
+    app.get('/api/iceplant/:town', async (req, res) => {
+        const { town } = req.params;
+            const limit = parseInt(req.query.limit) || 20;
+
+                console.log(`[API] Fetching ice plant payload for town: ${town}`);
+
+                    try {
+                            const searchQueries = [
+                                        `アイスプラント ${town}`,
+                                                    `${town} iceplant`,
+                                                                `${town} アイスプラント`
+                                                                        ];
+
+                                                                                const input = {
+                                                                                            "searchQueries": searchQueries,
+                                                                                                        "searchType": "hashtag",
+                                                                                                                    "resultsLimit": limit,
+                                                                                                                            };
+
+                                                                                                                                    const run = await client.actor('apify/instagram-scraper').call(input);
+                                                                                                                                            const { items } = await client.dataset(run.defaultDatasetId).listItems();
+
+                                                                                                                                                    const mediaPayload = items.map(item => ({
+                                                                                                                                                                id: item.id,
+                                                                                                                                                                            imageUrl: item.displayUrl,
+                                                                                                                                                                                        caption: item.caption,
+                                                                                                                                                                                                    owner: item.ownerUsername,
+                                                                                                                                                                                                                locationName: item.locationName || `${town} Town`,
+                                                                                                                                                                                                                            postUrl: item.url,
+                                                                                                                                                                                                                                        timestamp: item.timestamp
+                                                                                                                                                                                                                                                }));
+
+                                                                                                                                                                                                                                                        res.status(200).json({
+                                                                                                                                                                                                                                                                    status: 'success',
+                                                                                                                                                                                                                                                                                town: town,
+                                                                                                                                                                                                                                                                                            count: mediaPayload.length,
+                                                                                                                                                                                                                                                                                                        data: mediaPayload
+                                                                                                                                                                                                                                                                                                                });
+
+                                                                                                                                                                                                                                                                                                                    } catch (error) {
+                                                                                                                                                                                                                                                                                                                            console.error(`Error scraping for ${town}:`, error);
+                                                                                                                                                                                                                                                                                                                                    res.status(500).json({
+                                                                                                                                                                                                                                                                                                                                                status: 'error',
+                                                                                                                                                                                                                                                                                                                                                            message: 'Failed to fetch ice plant payload',
+                                                                                                                                                                                                                                                                                                                                                                        error: error.message
+                                                                                                                                                                                                                                                                                                                                                                                });
+                                                                                                                                                                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                                                                                                                                                                    });
+
+                                                                                                                                                                                                                                                                                                                                                                                    app.listen(PORT, () => {
+                                                                                                                                                                                                                                                                                                                                                                                        console.log(`Server running on http://localhost:${PORT}`);
+                                                                                                                                                                                                                                                                                                                                                                                        });
+                                                                                                                                                                                                                                                                                                                                                                                        
+
+=== STUDIO_PROJECT PACKAGE.JSON ===
+{
+  "name": "fluid-motion-unified-studio",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.39",
+    "tailwindcss": "^3.4.6",
+    "vite": "^5.3.4"
+  }
+}
+=== STUDIO_PROJECT VITE.CONFIG.JS ===
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+export default defineConfig({
+  plugins: [react()],
+  base: '/unified-studio/',
+  build: {
+    outDir: 'dist',
+    sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor': ['react', 'react-dom']
+        }
+      }
+    }
+  },
+  server: {
+    port: 3000,
+    host: true
+  }
+})
+
+=== STUDIO_PROJECT TAILWIND.CONFIG.JS ===
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {
+      fontFamily: {
+        orbitron: ['Orbitron', 'sans-serif'],
+        rajdhani: ['Rajdhani', 'sans-serif'],
+      },
+      colors: {
+        'dragon': {
+          900: '#0a0a0f',
+          800: '#12121a',
+          700: '#1a1a2e',
+          600: '#16213e',
+          500: '#0f3460',
+          400: '#e94560',
+          300: '#ff6b6b',
+          200: '#ffd93d',
+          100: '#6bcb77',
+        },
+        'fluid': {
+          cyan: '#00f5ff',
+          magenta: '#ff00ff',
+          amber: '#ffb700',
+          void: '#0a0a0f',
+          surface: '#14141f',
+          panel: '#1e1e2e',
+        }
+      },
+      animation: {
+        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'glow': 'glow 2s ease-in-out infinite alternate',
+        'scan': 'scan 4s linear infinite',
+      },
+      keyframes: {
+        glow: {
+          '0%': { boxShadow: '0 0 5px rgba(0, 245, 255, 0.3)' },
+          '100%': { boxShadow: '0 0 20px rgba(0, 245, 255, 0.6), 0 0 40px rgba(0, 245, 255, 0.3)' },
+        },
+        scan: {
+          '0%': { transform: 'translateY(-100%)' },
+          '100%': { transform: 'translateY(100%)' },
+        }
+      }
+    },
+  },
+  plugins: [],
+}
+=== STUDIO_PROJECT INDEX.HTML ===
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dragon 9 Time</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <canvas id="clock-canvas"></canvas>
+  </div>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>
+
+=== STUDIO_PROJECT DEPLOY.SH ===
+#!/bin/bash
+# Fluid Motion Unified Studio — Auto-Deploy Script
+# Run this from your local machine after cloning your repo
+
+set -e
+
+REPO_URL="https://github.com/fluidmotiontv-oss/D9Enigma.git"
+REPO_DIR="D9Enigma-temp"
+SOURCE_DIR="fluid-motion-unified-studio"
+BRANCH="main"
+
+echo "🐉 Fluid Motion Unified Studio — Deploy Script"
+echo "================================================"
+
+# Check if source exists
+if [ ! -d "$SOURCE_DIR" ]; then
+    echo "❌ Error: $SOURCE_DIR directory not found!"
+    echo "   Extract the zip file first, then run this script from the same folder."
+    exit 1
+fi
+
+# Clone or use existing repo
+if [ -d "$REPO_DIR" ]; then
+    echo "📁 Using existing $REPO_DIR"
+    cd "$REPO_DIR"
+    git pull origin "$BRANCH" || true
+    cd ..
+else
+    echo "📥 Cloning $REPO_URL..."
+    git clone "$REPO_URL" "$REPO_DIR"
+fi
+
+# Create unified-studio subdirectory in repo
+mkdir -p "$REPO_DIR/unified-studio"
+
+# Copy all files
+echo "📦 Copying files..."
+cp -r "$SOURCE_DIR/"* "$REPO_DIR/unified-studio/"
+
+# Create .gitignore
+cat > "$REPO_DIR/unified-studio/.gitignore" << 'EOF'
+node_modules/
+dist/
+.env
+.DS_Store
+*.log
+.vite/
+EOF
+
+cd "$REPO_DIR"
+
+# Stage, commit, push
+echo "📝 Staging files..."
+git add unified-studio/
+
+echo "💾 Committing..."
+git commit -m "feat: Fluid Motion Unified Studio v1.2
+
+- TV Automation Deck with camera switching, playlist, cue timeline
+- Dawn Engine with Web Audio API synthesis (5 patterns, 6 channels)
+- Radio Tuner with 10 genres, auto-spot, live stream routing
+- YouTube integration: IFrame player + Invidious audio extraction
+- Talkback microphone per channel
+- File drop audio routing
+- Dragon 9 v6 Clock with 36-station global sync
+- Unified Broadcast Queue (YouTube, Radio, File, Synth, TV Cue, D9 events)
+- 22 D9Enigma modules: Stargaze, Plasma, Portal, Garden, Healer + 17 placeholders
+- Cross-module sync via EventBus
+- Modular React/Vite/Tailwind architecture
+
+Built by Tim Doing | Fluid Motion TV | Dragon Nine" || echo "⚠️ Nothing new to commit"
+
+echo "🚀 Pushing to origin/$BRANCH..."
+git push origin "$BRANCH"
+
+echo ""
+echo "✅ DONE!"
+echo "   View at: https://github.com/fluidmotiontv-oss/D9Enigma/tree/main/unified-studio"
+echo "   Deploy to: https://fluidmotiontv-oss.github.io/D9Enigma/unified-studio/"
+
+# Optional: cleanup
+read -p "🧹 Remove temp directory? (y/n) " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    cd ..
+    rm -rf "$REPO_DIR"
+    echo "   Cleaned up."
+fi
+
+=== STUDIO_PROJECT POSTCSS.CONFIG.JS ===
+export default {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+}
+=== STUDIO_PROJECT DIRECTORY TREE ===
+total 8092
+drwxrwxr-x  13 tim tim    4096 Aug  3 14:25 .
+drwx------  47 tim tim    4096 Aug  3 14:25 ..
+drwxrwxr-x   4 tim tim    4096 Aug  1 16:46 01_raw_assets
+drwxrwxr-x   2 tim tim    4096 Aug  1 16:46 02_project_files
+drwxrwxr-x   2 tim tim    4096 Aug  1 21:54 03_scripts
+drwxrwxr-x   2 tim tim    4096 Aug  1 17:18 04_config
+drwxrwxr-x   4 tim tim    4096 Aug  1 17:22 05_exports
+-rw-rw-r--   1 tim tim   16633 Aug  1 21:22 3way_media_auditor.py
+drwxrwxr-x   3 tim tim    4096 Aug  1 17:42 apps
+-rw-rw-r--   1 tim tim    1649 Aug  1 21:26 build_kdenlive_timeline.py
+-rw-rw-r--   1 tim tim    2108 Aug  1 21:37 build_native_kdenlive.py
+-rwxr-xr-x   1 tim tim    2463 Jul 30 06:24 deploy.sh
+-rw-rw-r--   1 tim tim    1803 Aug  1 21:28 generate_edl.py
+-rw-r--r--   1 tim tim     366 Aug  3 14:04 index.html
+-rw-r--r--   1 tim tim    3367 Jul 30 06:26 MANUAL_DEPLOY.md
+-rw-rw-r--   1 tim tim    7287 Aug  1 21:23 master_media_inventory.csv
+drwxrwxr-x 103 tim tim    4096 Aug  1 20:52 node_modules
+-rw-r--r--   1 tim tim     516 Jul 30 04:56 package.json
+-rw-rw-r--   1 tim tim   90531 Aug  1 20:46 package-lock.json
+-rw-r--r--   1 tim tim      79 Jul 30 04:56 postcss.config.js
+-rw-r--r--   1 tim tim    5353 Jul 30 06:26 README.md
+-rw-rw-r--   1 tim tim 8059343 Aug  1 18:39 repomix-output.xml
+drwxrwxr-x  12 tim tim    4096 Aug  2 10:20 ShortGPT
+drwxrwxr-x   4 tim tim    4096 Aug  1 21:53 sites
+drwxrwxr-x   5 tim tim    4096 Jul 30 10:52 src
+-rw-rw-r--   1 tim tim       0 Aug  3 14:25 studio_audit_report.txt
+-rw-r--r--   1 tim tim    1348 Jul 30 04:56 tailwind.config.js
+drwxrwxr-x   5 tim tim    4096 Aug  3 00:17 venv
+-rw-r--r--   1 tim tim     394 Jul 30 12:42 vite.config.js
+
+=== STUDIO_PROJECT/SRC DIRECTORY ===
+total 32
+drwxrwxr-x  5 tim tim 4096 Jul 30 10:52 .
+drwxrwxr-x 13 tim tim 4096 Aug  3 14:25 ..
+-rw-r--r--  1 tim tim  977 Jul 30 06:14 App.jsx
+drwxrwxr-x  8 tim tim 4096 Jul 30 10:52 components
+drwxrwxr-x  2 tim tim 4096 Jul 30 10:52 hooks
+-rw-r--r--  1 tim tim 1399 Jul 30 05:08 index.css
+-rw-r--r--  1 tim tim  235 Jul 30 05:08 main.jsx
+drwxrwxr-x  2 tim tim 4096 Jul 30 10:52 services
+
+=== STUDIO_PROJECT/APPS DIRECTORY ===
+total 12
+drwxrwxr-x  3 tim tim 4096 Aug  1 17:42 .
+drwxrwxr-x 13 tim tim 4096 Aug  3 14:25 ..
+drwxrwxr-x 39 tim tim 4096 Jul 20 04:02 dragon9
+
+=== STUDIO_PROJECT/SITES DIRECTORY ===
+total 16
+drwxrwxr-x  4 tim tim 4096 Aug  1 21:53 .
+drwxrwxr-x 13 tim tim 4096 Aug  3 14:25 ..
+drwxrwxr-x  4 tim tim 4096 Aug  1 21:54 holiday_park
+drwxrwxr-x  4 tim tim 4096 Aug  1 21:56 port_wharf_store
+
+=== PYTHON VENV CHECK ===
+total 32
+drwxrwxr-x  5 tim tim 4096 Aug  3 00:17 .
+drwxrwxr-x 13 tim tim 4096 Aug  3 14:25 ..
+drwxrwxr-x  2 tim tim 4096 Aug  3 05:06 bin
+-rw-rw-r--  1 tim tim   43 Aug  2 10:09 CACHEDIR.TAG
+-rw-rw-r--  1 tim tim    1 Aug  2 10:09 .gitignore
+drwxrwxr-x  3 tim tim 4096 Aug  2 10:09 lib
+lrwxrwxrwx  1 tim tim    3 Aug  2 10:09 lib64 -> lib
+-rw-rw-rw-  1 tim tim    0 Aug  2 10:12 .lock
+-rw-rw-r--  1 tim tim  168 Aug  2 10:09 pyvenv.cfg
+drwxrwxr-x  3 tim tim 4096 Aug  3 00:17 share
+
+=== PYTHON SCRIPTS ===
+-rw-rw-r-- 1 tim tim 16633 Aug  1 21:22 studio_project/3way_media_auditor.py
+-rw-rw-r-- 1 tim tim  1649 Aug  1 21:26 studio_project/build_kdenlive_timeline.py
+-rw-rw-r-- 1 tim tim  2108 Aug  1 21:37 studio_project/build_native_kdenlive.py
+-rw-rw-r-- 1 tim tim  1803 Aug  1 21:28 studio_project/generate_edl.py
+
+=== NPM ERROR TEST ===

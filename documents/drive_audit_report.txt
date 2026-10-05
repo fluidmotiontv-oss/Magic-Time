@@ -1,0 +1,32 @@
+=== SECRETARY BOT DRIVE & SYSTEM AUDIT ===
+Timestamp: 2026-10-05 06:33:34 UTC
+
+--- Mounted Disks and Partitions ---
+NAME   FSTYPE FSVER LABEL              UUID                                 FSAVAIL FSUSE% MOUNTPOINTS
+sda                                                                                        
+├─sda1 ext4   1.0   rootantiX26        b73eeb33-dc41-4638-bf08-00eaf15576ed  136.7G    13% /
+└─sda2 ext4   1.0   homeantiX          5be5e4c3-da6d-4f53-8ef5-097101a86490  961.9M    93% /home
+sdb                                                                                        
+└─sdb1 ntfs         single terror bite 1088F78288F7649E                      303.2G    67% /media/single_terror_bite
+sdc                                                                                        
+├─sdc1                                                                                     
+├─sdc2                                                                                     
+└─sdc3                                                                                     
+sdd                                                                                        
+sde                                                                                        
+sdf                                                                                        
+sdg                                                                                        
+sdh                                                                                        
+sr0                                                                                        
+
+--- Disk Space Usage ---
+Filesystem      Size  Used Avail Use% Mounted on
+udev            7.8G     0  7.8G   0% /dev
+tmpfs           1.6G  820K  1.6G   1% /run
+/dev/sda1       167G   21G  137G  14% /
+shm             7.8G   39M  7.8G   1% /dev/shm
+cgroup_root      10M     0   10M   0% /sys/fs/cgroup
+tmpfs           7.8G  8.9M  7.8G   1% /tmp
+/dev/sdb1       932G  629G  304G  68% /media/single_terror_bite
+/dev/sda2        53G   49G  962M  99% /home
+

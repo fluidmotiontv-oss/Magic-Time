@@ -1,0 +1,1 @@
+28/06/2020 This is how yad-calendar entries work! Add ONLY ONE line per day, starting with the date. If nothing shows up in the calendar, try another date format like dd-mm-yyyy

@@ -1,0 +1,20 @@
+{
+    "path_checkpoints": [
+        "/home/tim/Fooocus/models/checkpoints"
+    ],
+    "path_loras": [
+        "/home/tim/Fooocus/models/loras"
+    ],
+    "path_embeddings": "/home/tim/Fooocus/models/embeddings",
+    "path_vae_approx": "/home/tim/Fooocus/models/vae_approx",
+    "path_vae": "/home/tim/Fooocus/models/vae",
+    "path_upscale_models": "/home/tim/Fooocus/models/upscale_models",
+    "path_inpaint": "/home/tim/Fooocus/models/inpaint",
+    "path_controlnet": "/home/tim/Fooocus/models/controlnet",
+    "path_clip_vision": "/home/tim/Fooocus/models/clip_vision",
+    "path_fooocus_expansion": "/home/tim/Fooocus/models/prompt_expansion/fooocus_expansion",
+    "path_wildcards": "/home/tim/Fooocus/wildcards",
+    "path_safety_checker": "/home/tim/Fooocus/models/safety_checker",
+    "path_sam": "/home/tim/Fooocus/models/sam",
+    "path_outputs": "/home/tim/Fooocus/outputs"
+}

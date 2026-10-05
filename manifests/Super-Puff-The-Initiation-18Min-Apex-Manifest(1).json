@@ -1,0 +1,47 @@
+{
+  "project": "Super Puff: The Initiation",
+  "specialFormat": "18-Minute Apex Special",
+  "temporalFramework": "Dragon 9 Protocol (54-Min Hours / 26.66-Hr Cycles)",
+  "version": "1.0.0-APEX",
+  "acts": [
+    {
+      "id": "act_01_threshold",
+      "time": "00:00 \u2013 06:00",
+      "title": "Act I: The Threshold",
+      "comedyTheory": "The Jarring Realization & System Shock",
+      "strainPairing": "Chrono-Glaze (28.2% THC)",
+      "studyTakeaway": "Establish immediate authority through atmosphere. If you bend perception in the first 60 seconds, the audience surrenders to the pace.",
+      "bit": "Super Puff materializes through analog CRT static, reaching into mid-air to twist an invisible dial that drops the venue room tone into a heavy 432Hz sub-bass hum.",
+      "gag": "The venue walls glitch and dissolve outward, revealing a boundless starry void while the mic stand floats in mid-air.",
+      "audio": "Analog static tear, deep 808 sub-drop (432Hz resonance), transition into lo-fi vinyl groove.",
+      "visuals": "CRT scanlines peeling back to 4K anime styling, neon aqua highlights, glassmorphism overlays.",
+      "performanceScript": "Welcome to the baseline. Secure your seatbelts, family\u2014we are skipping the warm-up entirely. Running on 54-minute hours, 26.66-hour cycles."
+    },
+    {
+      "id": "act_02_deep_tuning",
+      "time": "06:00 \u2013 12:00",
+      "title": "Act II: The Deep Tuning",
+      "comedyTheory": "Hyperbolic Escalation & The Cosmic Detour",
+      "strainPairing": "Resonance Haze (31.8% THC)",
+      "studyTakeaway": "Push observational comedy into temporal absurdism.",
+      "bit": "Super Puff breaks down the sheer absurdity of linear 60-minute time and everyday corporate schedules.",
+      "gag": "Background stage elements melt and morph into chromatic fluid.",
+      "audio": "Binaural spatial audio shifts, 16-step synth pulses, pitch-shifted reverb echoes.",
+      "visuals": "Chromatic aberration ripples, liquid metal surfaces.",
+      "performanceScript": "Let us talk about the microwave trap. Forty-five seconds feels like a four-year university degree."
+    },
+    {
+      "id": "act_03_jikan_gire",
+      "time": "12:00 \u2013 18:00",
+      "title": "Act III: Jikan Gire (Outro)",
+      "comedyTheory": "The Antidotal Mic Drop & Negative Space Exit",
+      "strainPairing": "Temporal Void Grand Reserve (34.5% THC)",
+      "studyTakeaway": "The greatest comedians leave the room wanting 5 more minutes.",
+      "bit": "Super Puff drops the liquid chrome mic, takes one last monstrous rip from the cosmic bong.",
+      "gag": "The entire animated set gets swallowed by a massive cloud of thick violet smoke.",
+      "audio": "Low-pass reverb tail, bubbling bong water SFX, vinyl crackle fade out.",
+      "visuals": "Volumetric violet smoke, liquid chrome physics collapse, glowing neon kanji dissipation.",
+      "performanceScript": "\u3058\u3083\u3042\u306a\u3001\u826f\u3044\u5922\u898b\u308d\u3088. Super Puff is out. Times Up, Mother Fathers."
+    }
+  ]
+}
