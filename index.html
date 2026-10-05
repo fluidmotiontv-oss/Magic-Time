@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dragon 9 // Magic Time Sovereign Portal</title>
+    <title>Dragon 9 // Magic Time Sovereign Portal & Celestial Engine</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
         :root {
-            --bg-color: #0b0f19;
-            --panel-bg: rgba(18, 24, 38, 0.7);
+            --bg-color: #050811;
+            --panel-bg: rgba(10, 15, 28, 0.85);
             --accent-cyan: #00f0ff;
             --accent-magenta: #ff007f;
             --accent-gold: #f39c12;
@@ -16,163 +17,371 @@
             --border-glow: rgba(0, 240, 255, 0.3);
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
-        body {
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
             background-color: var(--bg-color);
             color: var(--text-main);
-            min-height: 100vh;
+        }
+        #webgl-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .ui-container {
+            position: relative;
+            z-index: 10;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 2rem 1rem;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(0, 240, 255, 0.05) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(255, 0, 127, 0.05) 0%, transparent 40%);
+            min-height: 100vh;
+            transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1), opacity 1.2s ease;
         }
-        .container {
-            width: 100%;
-            max-width: 900px;
+        .floor-dropping {
+            transform: translateY(120vh) scale(0.9);
+            opacity: 0;
         }
         header {
             text-align: center;
-            margin-bottom: 2.5rem;
+            margin-bottom: 2rem;
             border-bottom: 1px solid var(--border-glow);
             padding-bottom: 1.5rem;
+            width: 100%;
+            background: rgba(5, 8, 17, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 0 0 16px 16px;
         }
         h1 {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             background: linear-gradient(135deg, var(--accent-cyan), var(--accent-magenta));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             margin-bottom: 0.5rem;
         }
         .subtitle {
             color: var(--text-muted);
             font-size: 1.1rem;
-            letter-spacing: 1px;
-        }
-        .clock-card {
-            background: var(--panel-bg);
-            border: 1px solid var(--border-glow);
-            border-radius: 12px;
-            padding: 1.5rem;
-            text-align: center;
-            margin-bottom: 2rem;
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
-            backdrop-filter: blur(10px);
-        }
-        .clock-display {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--accent-cyan);
-            letter-spacing: 2px;
-            margin: 0.5rem 0;
+            letter-spacing: 1.5px;
         }
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 1.5rem;
+            width: 100%;
             margin-bottom: 2rem;
         }
         .card {
             background: var(--panel-bg);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 10px;
+            border: 1px solid var(--border-glow);
+            border-radius: 12px;
             padding: 1.5rem;
-            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-            text-decoration: none;
-            color: inherit;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.1);
+            transition: transform 0.2s ease, border-color 0.2s ease;
         }
         .card:hover {
-            transform: translateY(-4px);
             border-color: var(--accent-cyan);
-            box-shadow: 0 4px 20px rgba(0, 240, 255, 0.2);
+            transform: translateY(-3px);
         }
         .card h3 {
             color: var(--accent-cyan);
-            margin-bottom: 0.5rem;
-            font-size: 1.25rem;
-        }
-        .card p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            line-height: 1.4;
             margin-bottom: 1rem;
-        }
-        .card-footer {
-            font-size: 0.85rem;
-            color: var(--accent-gold);
-            font-weight: bold;
+            font-size: 1.2rem;
             text-transform: uppercase;
             letter-spacing: 1px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        footer {
+        .clock-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 0.75rem 0;
+            font-size: 0.95rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 0.5rem;
+        }
+        .clock-val {
+            color: var(--accent-gold);
+            font-family: monospace;
+            font-weight: bold;
+            font-size: 1.05rem;
+        }
+        .action-btn {
+            background: linear-gradient(135deg, var(--accent-cyan), #0072ff);
+            color: #050811;
+            border: none;
+            padding: 0.9rem 2rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+            transition: all 0.3s ease;
+            margin: 1.5rem 0;
+        }
+        .action-btn:hover {
+            background: linear-gradient(135deg, var(--accent-magenta), var(--accent-gold));
+            box-shadow: 0 0 30px rgba(255, 0, 127, 0.6);
+            transform: scale(1.05);
+        }
+        .dialogue-box {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(10, 15, 28, 0.95);
+            border: 2px solid var(--accent-magenta);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            width: 90%;
+            max-width: 600px;
+            z-index: 100;
+            box-shadow: 0 0 40px rgba(255, 0, 127, 0.4);
+            opacity: 0;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease;
             text-align: center;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            margin-top: auto;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            padding-top: 1.5rem;
+        }
+        .dialogue-box.active {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+        .dialogue-speaker {
+            color: var(--accent-magenta);
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        .dialogue-text {
+            font-size: 1.2rem;
+            color: #fff;
+            line-height: 1.5;
+        }
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
             width: 100%;
+            margin-top: 1rem;
+        }
+        .portal-link {
+            background: var(--panel-bg);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+        .portal-link:hover {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
         }
     </style>
 </head>
 <body>
-    <div class="container">
+
+    <div id="webgl-container"></div>
+
+    <div class="ui-container" id="uiContainer">
         <header>
-            <h1>Magic Time // Dragon 9</h1>
-            <div class="subtitle">Sovereign Ecosystem & Media Pipeline Portal</div>
+            <h1>Dragon 9 // Celestial Engine</h1>
+            <div class="subtitle">Sovereign Temporal Framework & Solar Ecosystem</div>
         </header>
 
-        <div class="clock-card">
-            <div style="font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px;">Temporal Status</div>
-            <div class="clock-display" id="dragonClock">D9-HARMONIC ACTIVE</div>
-            <div style="font-size: 0.85rem; color: var(--accent-gold);">432 Hz Pythagorean Base // 54-Min Hour Framework</div>
-        </div>
+        <button class="action-btn" id="dropFloorBtn">Initiate Super Puff Intro // Floor Falls Away</button>
 
         <div class="grid">
-            <a href="https://fluidmotiontv-oss.github.io/Ad/" class="card" target="_blank">
-                <div>
-                    <h3>Super Puff Ad Portal</h3>
-                    <p>Live deployment of the Super Puff animated media campaign and Sovereign release renders.</p>
-                </div>
-                <div class="card-footer">Launch Portal →</div>
-            </a>
+            <div class="card">
+                <h3><span>World Clock</span> 🌍</h3>
+                <div class="clock-row"><span>UTC Standard:</span> <span class="clock-val" id="utcClock">--:--:--</span></div>
+                <div class="clock-row"><span>New Zealand (NZDT):</span> <span class="clock-val" id="nzClock">--:--:--</span></div>
+                <div class="clock-row"><span>Tokyo (JST):</span> <span class="clock-val" id="tokyoClock">--:--:--</span></div>
+            </div>
 
-            <a href="https://fluidmotiontv-oss.github.io/WwDWS/" class="card" target="_blank">
-                <div>
-                    <h3>West Coast Radio (WwDWS)</h3>
-                    <p>Decentralized peer-to-peer radio talkback remix gateway and audio streaming node.</p>
-                </div>
-                <div class="card-footer">Launch Portal →</div>
-            </a>
-
-            <a href="https://github.com/fluidmotiontv-oss/magic-time" class="card" target="_blank">
-                <div>
-                    <h3>Magic Time Repository</h3>
-                    <p>Core codebase, pipeline scripts, manifests, and technical audit vaults on GitHub.</p>
-                </div>
-                <div class="card-footer">View Code →</div>
-            </a>
+            <div class="card">
+                <h3><span>Dragon 9 Celestial Clock</span> 🐉</h3>
+                <div class="clock-row"><span>D9 Cycle (26.667h):</span> <span class="clock-val" id="d9CycleClock">0.000</span></div>
+                <div class="clock-row"><span>54-Min Hour:</span> <span class="clock-val" id="d9HourClock">--:--</span></div>
+                <div class="clock-row"><span>18-Min Apex Intermission:</span> <span class="clock-val" id="d9ApexClock">ACTIVE</span></div>
+                <div class="clock-row"><span>Harmonic Base:</span> <span class="clock-val">432 Hz Pythagorean</span></div>
+            </div>
         </div>
 
-        <footer>
-            Fluid Motion TV OSS &bull; Dragon 9 Sovereign Infrastructure
-        </footer>
+        <div class="links-grid">
+            <a href="https://fluidmotiontv-oss.github.io/Ad/" class="portal-link" target="_blank">Super Puff Ad Portal →</a>
+            <a href="https://fluidmotiontv-oss.github.io/WwDWS/" class="portal-link" target="_blank">West Coast Radio (WwDWS) →</a>
+            <a href="https://github.com/fluidmotiontv-oss/Magic-Time" class="portal-link" target="_blank">GitHub Repository →</a>
+        </div>
+    </div>
+
+    <div class="dialogue-box" id="dialogueBox">
+        <div class="dialogue-speaker">Super Puff // The Initiation</div>
+        <div class="dialogue-text" id="dialogueText">"Welcome to the fluid motion of the future. The floor is gone, but the trajectory is pure harmony."</div>
     </div>
 
     <script>
-        setInterval(() => {
+        // --- Three.js Solar System & Floor Setup ---
+        const container = document.getElementById('webgl-container');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 2000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        container.appendChild(renderer.domElement);
+
+        // Stars / Background particles
+        const starsGeometry = new THREE.BufferGeometry();
+        const starsCount = 3000;
+        const starPositions = new Float32Array(starsCount * 3);
+        for(let i = 0; i < starsCount * 3; i++) {
+            starPositions[i] = (Math.random() - 0.5) * 1500;
+        }
+        starsGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+        const starsMaterial = new THREE.PointsMaterial({ color: 0x00f0ff, size: 1.5, transparent: true, opacity: 0.8 });
+        const starField = new THREE.Points(starsGeometry, starsMaterial);
+        scene.add(starField);
+
+        // Celestial Bodies (Sun, Planets)
+        const sunGeometry = new THREE.SphereGeometry(35, 32, 32);
+        const sunMaterial = new THREE.MeshBasicMaterial({ color: 0xf39c12 });
+        const sun = new THREE.Mesh(sunGeometry, sunMaterial);
+        scene.add(sun);
+
+        // Sun Glow
+        const sunGlowGeom = new THREE.SphereGeometry(42, 32, 32);
+        const sunGlowMat = new THREE.MeshBasicMaterial({ color: 0xff007f, transparent: true, opacity: 0.25, blending: THREE.AdditiveBlending });
+        const sunGlow = new THREE.Mesh(sunGlowGeom, sunGlowMat);
+        scene.add(sunGlow);
+
+        const planets = [];
+        const planetData = [
+            { radius: 6, distance: 70, color: 0x00f0ff, speed: 0.015 },
+            { radius: 9, distance: 120, color: 0xff007f, speed: 0.01 },
+            { radius: 12, distance: 180, color: 0x2ecc71, speed: 0.007 },
+            { radius: 15, distance: 260, color: 0xf1c40f, speed: 0.004 }
+        ];
+
+        planetData.forEach(data => {
+            const orbitGroup = new THREE.Group();
+            scene.add(orbitGroup);
+
+            const geom = new THREE.SphereGeometry(data.radius, 24, 24);
+            const mat = new THREE.MeshStandardMaterial({ color: data.color, roughness: 0.4, metalness: 0.3 });
+            const mesh = new THREE.Mesh(geom, mat);
+            mesh.position.x = data.distance;
+            orbitGroup.add(mesh);
+            planets.push({ group: orbitGroup, speed: data.speed });
+        });
+
+        // Ambient Light
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+        scene.add(ambientLight);
+
+        // The Floor Grid (which will fall away)
+        const gridHelper = new THREE.GridHelper(300, 40, 0x00f0ff, 0xff007f);
+        gridHelper.position.y = -20;
+        scene.add(gridHelper);
+
+        // Super Puff 3D Avatar (Represented as a glowing sovereign plasma orb / entity)
+        const puffGeo = new THREE.SphereGeometry(6, 32, 32);
+        const puffMat = new THREE.MeshBasicMaterial({ color: 0xff007f, wireframe: true });
+        const superPuff = new THREE.Mesh(puffGeo, puffMat);
+        superPuff.position.set(0, -10, 80);
+        scene.add(superPuff);
+
+        camera.position.set(0, 15, 150);
+        camera.lookAt(0, 0, 0);
+
+        let isFlying = false;
+        let flightProgress = 0;
+
+        document.getElementById('dropFloorBtn').addEventListener('click', () => {
+            document.getElementById('uiContainer').classList.add('floor-dropping');
+            document.getElementById('dialogueBox').classList.add('active');
+            isFlying = true;
+        });
+
+        // --- Clock & Dragon 9 Calculation Engine ---
+        function updateClocks() {
             const now = new Date();
-            const minutes = now.getMinutes();
-            const seconds = now.getSeconds();
-            document.getElementById('dragonClock').textContent = 
-                `D9-TIME // ${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')} (54M CORE)`;
-        }, 1000);
+            
+            // Standard clocks
+            document.getElementById('utcClock').textContent = now.toUTCString().slice(17, 25);
+            document.getElementById('nzClock').textContent = now.toLocaleTimeString('en-NZ');
+            document.getElementById('tokyoClock').textContent = now.toLocaleTimeString('en-JP', { timeZone: 'Asia/Tokyo' });
+
+            // Dragon 9 Temporal Calculations
+            // 1440 minutes in a day / 54-minute hours = 26.6667 D9 Hours per day
+            const totalMinutesToday = now.getHours() * 60 + now.getMinutes() + now.getSeconds() / 60;
+            const d9DecimalHours = totalMinutesToday / 54;
+            const d9Hours = Math.floor(d9DecimalHours);
+            const d9Minutes = Math.floor((d9DecimalHours - d9Hours) * 54);
+            const d9Seconds = Math.floor((((d9DecimalHours - d9Hours) * 54) - d9Minutes) * 60);
+
+            document.getElementById('d9CycleClock').textContent = d9DecimalHours.toFixed(4) + " D9h";
+            document.getElementById('d9HourClock').textContent = `${String(d9Hours).padStart(2, '0')}:${String(d9Minutes).padStart(2, '0')}:${String(d9Seconds).padStart(2, '0')}`;
+            
+            // Apex intermission check (every 540 minutes or specific window)
+            const apexActive = (Math.floor(totalMinutesToday) % 90 < 18);
+            document.getElementById('d9ApexClock').textContent = apexActive ? "✨ 18-MIN APEX ACTIVE" : "HARMONIC FLOW";
+        }
+
+        setInterval(updateClocks, 1000);
+        updateClocks();
+
+        // --- Animation Loop ---
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Rotate planets and starfield
+            planets.forEach(p => {
+                p.group.rotation.y += p.speed * 0.05;
+            });
+            starField.rotation.y += 0.0005;
+            sunGlow.rotation.y += 0.002;
+
+            if (isFlying) {
+                flightProgress += 0.015;
+                camera.position.z -= 1.2;
+                camera.position.y += 0.3;
+                gridHelper.position.y -= 0.8; // Floor drops away into the abyss
+                superPuff.rotation.x += 0.02;
+                superPuff.rotation.y += 0.03;
+                if (camera.position.z < -400) {
+                    // Loop flight
+                    camera.position.z = 150;
+                    camera.position.y = 15;
+                    gridHelper.position.y = -20;
+                    flightProgress = 0;
+                }
+            }
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
     </script>
 </body>
 </html>
