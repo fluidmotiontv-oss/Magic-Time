@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dragon 9 // Celestial Engine, Fast Checkout & Lotus Piano</title>
+    <title>Dragon 9 // Time with the Divine & 36-Clock Celestial Engine</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
         :root {
@@ -72,6 +72,25 @@
             color: var(--text-muted);
             font-size: 1.1rem;
             letter-spacing: 1.5px;
+        }
+        .divine-banner {
+            background: linear-gradient(90deg, rgba(255,0,127,0.2), rgba(243,156,18,0.2));
+            border: 2px solid var(--accent-magenta);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            text-align: center;
+            width: 100%;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 0 30px rgba(255,0,127,0.3);
+            display: none;
+            animation: pulseDivine 2s infinite alternate;
+        }
+        .divine-banner.active {
+            display: block;
+        }
+        @keyframes pulseDivine {
+            0% { border-color: var(--accent-magenta); box-shadow: 0 0 20px rgba(255,0,127,0.3); }
+            100% { border-color: var(--accent-gold); box-shadow: 0 0 40px rgba(243,156,18,0.6); }
         }
         .grid {
             display: grid;
@@ -174,7 +193,6 @@
             50% { border-color: var(--accent-magenta); box-shadow: 0 0 25px rgba(255,0,127,0.5); }
             100% { border-color: var(--accent-gold); box-shadow: 0 0 15px rgba(243,156,18,0.3); }
         }
-        /* Fast Shopper Bar & Offers Accordion */
         .fast-checkout-bar {
             background: linear-gradient(90deg, rgba(0,240,255,0.1), rgba(255,0,127,0.1));
             border: 1px solid var(--accent-cyan);
@@ -233,7 +251,6 @@
             display: block;
             margin: 0.5rem 0;
         }
-        /* Lotus Piano Bonus Widget */
         .piano-container {
             background: rgba(5, 8, 17, 0.9);
             border: 1px solid var(--accent-magenta);
@@ -334,9 +351,15 @@
 
     <div class="ui-container" id="uiContainer">
         <header>
-            <h1>Dragon 9 // Express Sovereign Checkout</h1>
-            <div class="subtitle">Instant Shopper Access & 432 Hz Lotus Piano Bonus Gift</div>
+            <h1>Dragon 9 // 36-Clock Anchored Engine</h1>
+            <div class="subtitle">Sovereign 36-Clock Array (Centered @ 12) & 432 Hz Lotus Piano</div>
         </header>
+
+        <!-- Divine Time Banner (11:51 - 12:09 Twice Daily) -->
+        <div class="divine-banner" id="divineBanner">
+            <h3 style="color: var(--accent-magenta); margin-bottom: 0.25rem; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 2px;">✨ Time with the Divine (RELAX)</h3>
+            <p style="font-size: 0.9rem; color: #fff;">18-Minute Apex Alignment Active. Anchored to Absolute Top Dead Center (12:00).</p>
+        </div>
 
         <!-- Fast Shopper Bar -->
         <div class="fast-checkout-bar">
@@ -360,7 +383,7 @@
             <div class="offer-tier" style="border-color: var(--accent-magenta);">
                 <h4 style="color: var(--accent-magenta);">Tier 2: Sovereign Bundle</h4>
                 <span class="price">$27.00 USD</span>
-                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Gyro Tool, Full D9 Clock Codebase & Audio Stems.</p>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Gyro Tool, 36-Clock Codebase & Audio Stems.</p>
                 <a href="#buy" class="portal-link" style="display:block; border-color: var(--accent-magenta); color: var(--accent-magenta);">Select Tier 2</a>
             </div>
             <div class="offer-tier" style="border-color: var(--accent-gold);">
@@ -379,15 +402,15 @@
                 <div class="clock-row"><span>UTC Standard:</span> <span class="clock-val" id="utcClock">--:--:--</span></div>
                 <div class="clock-row"><span>New Zealand (NZDT):</span> <span class="clock-val" id="nzClock">--:--:--</span></div>
                 <div class="clock-row"><span>Tokyo (JST):</span> <span class="clock-val" id="tokyoClock">--:--:--</span></div>
-                <div class="clock-row"><span>D9 54-Min Hour:</span> <span class="clock-val" id="d9HourClock">--:--:--</span></div>
+                <div class="clock-row"><span>36-Clock Active Node:</span> <span class="clock-val" id="d9NodeClock">NODE #01 (@12)</span></div>
             </div>
 
             <div class="card">
-                <h3><span>Temporal Framework Explanation</span> 🐉</h3>
-                <p class="explanation-text">
-                    The <b>Dragon 9</b> framework reallocates the standard 1,440-minute daily cycle into <b>54-minute hours</b> (26.667-hour daily cycles), punctuated by <b>18-minute Apex intermissions</b>. Rooted in a <b>432 Hz Pythagorean harmonic base</b>, it replaces rigid linear time with the fluid motion of the future.
-                </p>
-                <div class="clock-row"><span>Apex Intermission:</span> <span class="clock-val" id="d9ApexClock">HARMONIC</span></div>
+                <h3><span>Dragon 9 // 36-Clock Engine</span> 🐉</h3>
+                <div class="clock-row"><span>54-Min Hour:</span> <span class="clock-val" id="d9HourClock">--:--:--</span></div>
+                <div class="clock-row"><span>Apex & Divine State:</span> <span class="clock-val" id="d9ApexClock">HARMONIC</span></div>
+                <div class="clock-row"><span>Harmonic Base:</span> <span class="clock-val">432 Hz Pythagorean</span></div>
+                <div class="clock-row"><span>Array Anchor:</span> <span class="clock-val">Centered @ 12</span></div>
             </div>
         </div>
 
@@ -395,7 +418,7 @@
             <div class="card" style="grid-column: 1 / -1; text-align: center;">
                 <h3><span>Gyro Clock Celestial 3D Tool // Learning Edition</span> 🪐</h3>
                 <p class="explanation-text" style="max-width: 700px; margin: 0 auto 1rem auto;">
-                    Master orbital mechanics and temporal harmonics with the interactive 3D Gyro Celestial Learning Tool.
+                    Master orbital mechanics and the 36-clock array anchored at 12 with the interactive 3D Gyro Celestial Learning Tool.
                 </p>
                 <a href="#buy" class="holographic-btn">
                     ✨ Get Gyro Celestial Tool & E-Book Access — $9.00 USD
@@ -447,7 +470,7 @@
             }
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
-            osc.type = 'triangle'; // Warm lotus timbre
+            osc.type = 'triangle';
             osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
 
             gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
@@ -478,7 +501,6 @@
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         container.appendChild(renderer.domElement);
 
-        // Starfield
         const starsGeometry = new THREE.BufferGeometry();
         const starsCount = 3000;
         const starPositions = new Float32Array(starsCount * 3);
@@ -490,7 +512,6 @@
         const starField = new THREE.Points(starsGeometry, starsMaterial);
         scene.add(starField);
 
-        // Sun & Glow
         const sunGeometry = new THREE.SphereGeometry(35, 32, 32);
         const sunMaterial = new THREE.MeshBasicMaterial({ color: 0xf39c12 });
         const sun = new THREE.Mesh(sunGeometry, sunMaterial);
@@ -501,7 +522,6 @@
         const sunGlow = new THREE.Mesh(sunGlowGeom, sunGlowMat);
         scene.add(sunGlow);
 
-        // Gyro Rings
         const gyroGroup = new THREE.Group();
         scene.add(gyroGroup);
         const gyroRings = [];
@@ -558,22 +578,48 @@
             isFlying = true;
         });
 
+        // --- 36-Clock Array & "Time with the Divine" Engine (11:51 - 12:09 Twice Daily) ---
         function updateClocks() {
             const now = new Date();
+            const h = now.getHours();
+            const m = now.getMinutes();
+            const s = now.getSeconds();
+            const totalMinutesToday = h * 60 + m + s / 60;
+
             document.getElementById('utcClock').textContent = now.toUTCString().slice(17, 25);
             document.getElementById('nzClock').textContent = now.toLocaleTimeString('en-NZ');
             document.getElementById('tokyoClock').textContent = now.toLocaleTimeString('en-JP', { timeZone: 'Asia/Tokyo' });
 
-            const totalMinutesToday = now.getHours() * 60 + now.getMinutes() + now.getSeconds() / 60;
+            // Check for "Time with the Divine" (11:51 AM to 12:09 PM and 11:51 PM to 12:09 AM)
+            // Midday window: 11:51 (711 min) to 12:09 (729 min)
+            // Midnight window: 23:51 (1431 min) to 00:09 (9 min)
+            const isMiddayDivine = (totalMinutesToday >= 711 && totalMinutesToday <= 729);
+            const isMidnightDivine = (totalMinutesToday >= 1431 || totalMinutesToday <= 9);
+            const isDivineActive = isMiddayDivine || isMidnightDivine;
+
+            const banner = document.getElementById('divineBanner');
+            if (isDivineActive) {
+                banner.classList.add('active');
+                document.getElementById('d9ApexClock').textContent = "✨ TIME WITH THE DIVINE (RELAX)";
+            } else {
+                banner.classList.remove('active');
+                const apexActive = (Math.floor(totalMinutesToday) % 90 < 18);
+                document.getElementById('d9ApexClock').textContent = apexActive ? "✨ 18-MIN APEX ACTIVE" : "36-CLOCK HARMONIC FLOW";
+            }
+
+            // 36-Clock Array anchored at 12
+            const clockIndex = (totalMinutesToday / 40) % 36;
+            const baseClockNum = Math.floor(clockIndex) + 1;
+            const nodeProgress = ((clockIndex % 1) * 100).toFixed(1);
+            document.getElementById('d9NodeClock').textContent = `NODE #${String(baseClockNum).padStart(2, '0')} (${nodeProgress}% @12)`;
+
+            // D9 54-Min Hour Calculations
             const d9DecimalHours = totalMinutesToday / 54;
             const d9Hours = Math.floor(d9DecimalHours);
             const d9Minutes = Math.floor((d9DecimalHours - d9Hours) * 54);
             const d9Seconds = Math.floor((((d9DecimalHours - d9Hours) * 54) - d9Minutes) * 60);
 
             document.getElementById('d9HourClock').textContent = `${String(d9Hours).padStart(2, '0')}:${String(d9Minutes).padStart(2, '0')}:${String(d9Seconds).padStart(2, '0')}`;
-            
-            const apexActive = (Math.floor(totalMinutesToday) % 90 < 18);
-            document.getElementById('d9ApexClock').textContent = apexActive ? "✨ 18-MIN APEX ACTIVE" : "HARMONIC FLOW ACTIVE";
         }
 
         setInterval(updateClocks, 1000);
