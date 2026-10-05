@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dragon 9 // Magic Time Sovereign Portal & Celestial Engine</title>
+    <title>Dragon 9 // Celestial Engine & Gyro Learning Portal</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
         :root {
@@ -117,6 +117,12 @@
             font-weight: bold;
             font-size: 1.05rem;
         }
+        .explanation-text {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
         .action-btn {
             background: linear-gradient(135deg, var(--accent-cyan), #0072ff);
             color: #050811;
@@ -136,6 +142,37 @@
             background: linear-gradient(135deg, var(--accent-magenta), var(--accent-gold));
             box-shadow: 0 0 30px rgba(255, 0, 127, 0.6);
             transform: scale(1.05);
+        }
+        .holographic-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(0,240,255,0.15), rgba(255,0,127,0.15));
+            border: 2px solid var(--accent-cyan);
+            color: #fff;
+            padding: 1rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 12px;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0,240,255,0.3), inset 0 0 15px rgba(0,240,255,0.1);
+            animation: holoGlow 3s infinite alternate;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        .holographic-btn:hover {
+            transform: scale(1.02);
+            border-color: var(--accent-magenta);
+            box-shadow: 0 0 35px rgba(255,0,127,0.6), inset 0 0 20px rgba(255,0,127,0.3);
+        }
+        @keyframes holoGlow {
+            0% { border-color: var(--accent-cyan); box-shadow: 0 0 15px rgba(0,240,255,0.3); }
+            50% { border-color: var(--accent-magenta); box-shadow: 0 0 25px rgba(255,0,127,0.5); }
+            100% { border-color: var(--accent-gold); box-shadow: 0 0 15px rgba(243,156,18,0.3); }
         }
         .dialogue-box {
             position: fixed;
@@ -201,26 +238,39 @@
 
     <div class="ui-container" id="uiContainer">
         <header>
-            <h1>Dragon 9 // Celestial Engine</h1>
-            <div class="subtitle">Sovereign Temporal Framework & Solar Ecosystem</div>
+            <h1>Dragon 9 // Celestial Gyro Engine</h1>
+            <div class="subtitle">Sovereign Temporal Framework & 3D Celestial Learning Tool</div>
         </header>
 
         <button class="action-btn" id="dropFloorBtn">Initiate Super Puff Intro // Floor Falls Away</button>
 
         <div class="grid">
             <div class="card">
-                <h3><span>World Clock</span> 🌍</h3>
+                <h3><span>Celestial & World Clocks</span> 🌍</h3>
                 <div class="clock-row"><span>UTC Standard:</span> <span class="clock-val" id="utcClock">--:--:--</span></div>
                 <div class="clock-row"><span>New Zealand (NZDT):</span> <span class="clock-val" id="nzClock">--:--:--</span></div>
                 <div class="clock-row"><span>Tokyo (JST):</span> <span class="clock-val" id="tokyoClock">--:--:--</span></div>
+                <div class="clock-row"><span>D9 54-Min Hour:</span> <span class="clock-val" id="d9HourClock">--:--:--</span></div>
             </div>
 
             <div class="card">
-                <h3><span>Dragon 9 Celestial Clock</span> 🐉</h3>
-                <div class="clock-row"><span>D9 Cycle (26.667h):</span> <span class="clock-val" id="d9CycleClock">0.000</span></div>
-                <div class="clock-row"><span>54-Min Hour:</span> <span class="clock-val" id="d9HourClock">--:--</span></div>
-                <div class="clock-row"><span>18-Min Apex Intermission:</span> <span class="clock-val" id="d9ApexClock">ACTIVE</span></div>
-                <div class="clock-row"><span>Harmonic Base:</span> <span class="clock-val">432 Hz Pythagorean</span></div>
+                <h3><span>Temporal Framework Explanation</span> 🐉</h3>
+                <p class="explanation-text">
+                    The <b>Dragon 9</b> framework reallocates the standard 1,440-minute daily cycle into <b>54-minute hours</b> (26.667-hour daily cycles), punctuated by <b>18-minute Apex intermissions</b>. Rooted in a <b>432 Hz Pythagorean harmonic base</b>, it replaces rigid linear time with the fluid motion of the future.
+                </p>
+                <div class="clock-row"><span>Apex Intermission:</span> <span class="clock-val" id="d9ApexClock">HARMONIC</span></div>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="card" style="grid-column: 1 / -1; text-align: center;">
+                <h3><span>Gyro Clock Celestial 3D Tool // Learning Edition</span> 🪐</h3>
+                <p class="explanation-text" style="max-width: 700px; margin: 0 auto 1.5rem auto;">
+                    Master orbital mechanics and temporal harmonics with the interactive 3D Gyro Celestial Learning Tool. Visualize planetary rings, gyroscope precession, and harmonic intervals in real-time WebGL.
+                </p>
+                <a href="#buy" class="holographic-btn">
+                    ✨ Get Gyro Celestial Tool & E-Book Access — $9.00 USD
+                </a>
             </div>
         </div>
 
@@ -237,7 +287,6 @@
     </div>
 
     <script>
-        // --- Three.js Solar System & Floor Setup ---
         const container = document.getElementById('webgl-container');
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 2000);
@@ -246,7 +295,6 @@
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         container.appendChild(renderer.domElement);
 
-        // Stars / Background particles
         const starsGeometry = new THREE.BufferGeometry();
         const starsCount = 3000;
         const starPositions = new Float32Array(starsCount * 3);
@@ -258,24 +306,34 @@
         const starField = new THREE.Points(starsGeometry, starsMaterial);
         scene.add(starField);
 
-        // Celestial Bodies (Sun, Planets)
         const sunGeometry = new THREE.SphereGeometry(35, 32, 32);
         const sunMaterial = new THREE.MeshBasicMaterial({ color: 0xf39c12 });
         const sun = new THREE.Mesh(sunGeometry, sunMaterial);
         scene.add(sun);
 
-        // Sun Glow
         const sunGlowGeom = new THREE.SphereGeometry(42, 32, 32);
         const sunGlowMat = new THREE.MeshBasicMaterial({ color: 0xff007f, transparent: true, opacity: 0.25, blending: THREE.AdditiveBlending });
         const sunGlow = new THREE.Mesh(sunGlowGeom, sunGlowMat);
         scene.add(sunGlow);
 
+        const gyroGroup = new THREE.Group();
+        scene.add(gyroGroup);
+        const gyroRings = [];
+        for(let i = 0; i < 3; i++) {
+            const ringGeo = new THREE.RingGeometry(55 + i*18, 57 + i*18, 64);
+            const ringMat = new THREE.MeshBasicMaterial({ color: i === 0 ? 0x00f0ff : i === 1 ? 0xff007f : 0xf39c12, side: THREE.DoubleSide, transparent: true, opacity: 0.7 });
+            const ring = new THREE.Mesh(ringGeo, ringMat);
+            ring.rotation.x = Math.PI / (2 + i);
+            gyroGroup.add(ring);
+            gyroRings.push(ring);
+        }
+
         const planets = [];
         const planetData = [
-            { radius: 6, distance: 70, color: 0x00f0ff, speed: 0.015 },
-            { radius: 9, distance: 120, color: 0xff007f, speed: 0.01 },
-            { radius: 12, distance: 180, color: 0x2ecc71, speed: 0.007 },
-            { radius: 15, distance: 260, color: 0xf1c40f, speed: 0.004 }
+            { radius: 6, distance: 90, color: 0x00f0ff, speed: 0.015 },
+            { radius: 9, distance: 140, color: 0xff007f, speed: 0.01 },
+            { radius: 12, distance: 200, color: 0x2ecc71, speed: 0.007 },
+            { radius: 15, distance: 280, color: 0xf1c40f, speed: 0.004 }
         ];
 
         planetData.forEach(data => {
@@ -290,27 +348,23 @@
             planets.push({ group: orbitGroup, speed: data.speed });
         });
 
-        // Ambient Light
         const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
         scene.add(ambientLight);
 
-        // The Floor Grid (which will fall away)
         const gridHelper = new THREE.GridHelper(300, 40, 0x00f0ff, 0xff007f);
         gridHelper.position.y = -20;
         scene.add(gridHelper);
 
-        // Super Puff 3D Avatar (Represented as a glowing sovereign plasma orb / entity)
         const puffGeo = new THREE.SphereGeometry(6, 32, 32);
         const puffMat = new THREE.MeshBasicMaterial({ color: 0xff007f, wireframe: true });
         const superPuff = new THREE.Mesh(puffGeo, puffMat);
         superPuff.position.set(0, -10, 80);
         scene.add(superPuff);
 
-        camera.position.set(0, 15, 150);
+        camera.position.set(0, 15, 160);
         camera.lookAt(0, 0, 0);
 
         let isFlying = false;
-        let flightProgress = 0;
 
         document.getElementById('dropFloorBtn').addEventListener('click', () => {
             document.getElementById('uiContainer').classList.add('floor-dropping');
@@ -318,58 +372,48 @@
             isFlying = true;
         });
 
-        // --- Clock & Dragon 9 Calculation Engine ---
         function updateClocks() {
             const now = new Date();
-            
-            // Standard clocks
             document.getElementById('utcClock').textContent = now.toUTCString().slice(17, 25);
             document.getElementById('nzClock').textContent = now.toLocaleTimeString('en-NZ');
             document.getElementById('tokyoClock').textContent = now.toLocaleTimeString('en-JP', { timeZone: 'Asia/Tokyo' });
 
-            // Dragon 9 Temporal Calculations
-            // 1440 minutes in a day / 54-minute hours = 26.6667 D9 Hours per day
             const totalMinutesToday = now.getHours() * 60 + now.getMinutes() + now.getSeconds() / 60;
             const d9DecimalHours = totalMinutesToday / 54;
             const d9Hours = Math.floor(d9DecimalHours);
             const d9Minutes = Math.floor((d9DecimalHours - d9Hours) * 54);
             const d9Seconds = Math.floor((((d9DecimalHours - d9Hours) * 54) - d9Minutes) * 60);
 
-            document.getElementById('d9CycleClock').textContent = d9DecimalHours.toFixed(4) + " D9h";
             document.getElementById('d9HourClock').textContent = `${String(d9Hours).padStart(2, '0')}:${String(d9Minutes).padStart(2, '0')}:${String(d9Seconds).padStart(2, '0')}`;
             
-            // Apex intermission check (every 540 minutes or specific window)
             const apexActive = (Math.floor(totalMinutesToday) % 90 < 18);
-            document.getElementById('d9ApexClock').textContent = apexActive ? "✨ 18-MIN APEX ACTIVE" : "HARMONIC FLOW";
+            document.getElementById('d9ApexClock').textContent = apexActive ? "✨ 18-MIN APEX ACTIVE" : "HARMONIC FLOW ACTIVE";
         }
 
         setInterval(updateClocks, 1000);
         updateClocks();
 
-        // --- Animation Loop ---
         function animate() {
             requestAnimationFrame(animate);
 
-            // Rotate planets and starfield
-            planets.forEach(p => {
-                p.group.rotation.y += p.speed * 0.05;
-            });
+            planets.forEach(p => { p.group.rotation.y += p.speed * 0.05; });
             starField.rotation.y += 0.0005;
             sunGlow.rotation.y += 0.002;
 
+            gyroRings[0].rotation.z += 0.01;
+            gyroRings[1].rotation.y -= 0.008;
+            gyroRings[2].rotation.x += 0.006;
+
             if (isFlying) {
-                flightProgress += 0.015;
                 camera.position.z -= 1.2;
                 camera.position.y += 0.3;
-                gridHelper.position.y -= 0.8; // Floor drops away into the abyss
+                gridHelper.position.y -= 0.8;
                 superPuff.rotation.x += 0.02;
                 superPuff.rotation.y += 0.03;
                 if (camera.position.z < -400) {
-                    // Loop flight
-                    camera.position.z = 150;
+                    camera.position.z = 160;
                     camera.position.y = 15;
                     gridHelper.position.y = -20;
-                    flightProgress = 0;
                 }
             }
 
